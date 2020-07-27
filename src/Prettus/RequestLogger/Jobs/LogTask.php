@@ -25,10 +25,11 @@ class LogTask implements ShouldQueue
      * @param $request
      * @param $response
      */
-    public function __construct($request, $response)
+    public function __construct($request, $response, $benchmarkResult)
     {
         $this->request  = $request;
         $this->response = $response;
+        $this->benchmarkResult = $benchmarkResult;
     }
 
     /**
@@ -37,6 +38,6 @@ class LogTask implements ShouldQueue
     public function handle()
     {
         $requestLogger = app(\Prettus\RequestLogger\ResponseLogger::class);
-        $requestLogger->log($this->request, $this->response);
+        $requestLogger->log($this->request, $this->response, $this->benchmarkResult);
     }
 }

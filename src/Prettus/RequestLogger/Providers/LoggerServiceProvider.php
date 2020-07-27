@@ -46,7 +46,7 @@ class LoggerServiceProvider extends ServiceProvider
         Benchmarking::start('application');
 
         $this->app['events']->listen(RequestHandled::class, function ($event) {
-            Benchmarking::end('application');
+            $benchmarkResult = Benchmarking::end('application');
 
             if(!$this->excluded($event->request)) {
 
@@ -58,7 +58,7 @@ class LoggerServiceProvider extends ServiceProvider
                     $task = new LogTask53($event->request, $event->response);
                 }else{
                     //Compatible with Laravel 5.4 or later
-                    $task = new LogTask($event->request, $event->response);
+                    $task = new LogTask($event->request, $event->response, $benchmarkResult);
                 }
 
                 if($queueName = config('request-logger.queue')) {

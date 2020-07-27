@@ -38,12 +38,21 @@ class ResponseInterpolation extends BaseInterpolation {
             "content",
             "httpVersion",
             "status",
-            "statusCode"
+            "statusCode",
+            "startMem",
+            "endMem",
+            "peakMem",
+            "leakMem",
+
         ], [
             "getContent",
             "getProtocolVersion",
             "getStatusCode",
-            "getStatusCode"
+            "getStatusCode",
+            "getStartMem",
+            "getEndMem",
+            "getPeakMem",
+            "getLeakMem"
         ],camel_case($variable));
 
         if( method_exists($this->response, $method) ) {
@@ -96,7 +105,56 @@ class ResponseInterpolation extends BaseInterpolation {
     public function responseTime()
     {
         try{
-            return Benchmarking::duration('application');
+            return Benchmarking::duration('application')['duration'];
+        }catch (\Exception $e){
+            return null;
+        }
+    }
+
+
+    /**
+     * @return float|null
+     */
+    public function getStartMem()
+    {
+        try{
+            return Benchmarking::duration('application')['memory_start'];
+        }catch (\Exception $e){
+            return null;
+        }
+    }
+
+     /**
+     * @return float|null
+     */
+    public function getEndMem()
+    {
+        try{
+            return Benchmarking::duration('application')['memory_end'];
+        }catch (\Exception $e){
+            return null;
+        }
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getPeakMem()
+    {
+        try{
+            return Benchmarking::duration('application')['memory_peak'];
+        }catch (\Exception $e){
+            return null;
+        }
+    }
+
+    /**
+     * @return float|null
+     */
+    public function getLeakMem()
+    {
+        try{
+            return Benchmarking::duration('application')['memory_leak'];
         }catch (\Exception $e){
             return null;
         }

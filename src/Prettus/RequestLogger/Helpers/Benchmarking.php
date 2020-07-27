@@ -20,9 +20,11 @@ class Benchmarking
     public static function start($name)
     {
         $start = microtime(true);
+        $memory_start = memory_get_usage();
 
         static::$timers[$name] = [
-            'start'=>$start
+            'start'=>$start,
+            'memory_start'=>$memory_start
         ];
 
         return $start;
@@ -37,18 +39,26 @@ class Benchmarking
     {
 
         $end = microtime(true);
+        $memory_end = memory_get_usage();
+        $memory_peak = memory_get_peak_usage();
 
         if( isset(static::$timers[$name]) && isset(static::$timers[$name]['start']) ) {
 
             if( isset(static::$timers[$name]['duration']) ){
-                return static::$timers[$name]['duration'];
+                return static::$timers[$name];
             }
 
             $start = static::$timers[$name]['start'];
-            static::$timers[$name]['end'] = $end;
-            static::$timers[$name]['duration'] = $end - $start;
+            $memory_start = static::$timers[$name]['memory_start'];
 
-            return static::$timers[$name]['duration'];
+            static::$timers[$name]['end'] = $end;
+            static::$timers[$name]['memory_end'] = $memory_end;
+            static::$timers[$name]['duration'] = $end - $start;
+            static::$timers[$name]['memory_peak'] = $memory_peak;
+            static::$timers[$name]['memory_leak'] = $memory_end - $memory_start;
+
+
+            return static::$timers[$name];
         }
 
         throw new \Exception("Benchmarking '{$name}' not started");

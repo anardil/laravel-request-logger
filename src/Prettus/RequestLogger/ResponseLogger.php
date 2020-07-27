@@ -57,14 +57,14 @@ class ResponseLogger
      * @param Request $request
      * @param Response $response
      */
-    public function log(Request $request, Response $response)
+    public function log(Request $request, Response $response, $benchmarkResults)
     {
         $this->responseInterpolation->setResponse($response);
         $this->responseInterpolation->setRequest($request);
         $this->requestInterpolation->setRequest($request);
 
         if( config('request-logger.logger.enabled') ) {
-            $format = config('request-logger.logger.format', "{ip} {remote_user} {date} {method} {url} HTTP/{http_version} {status} {content_length} {referer} {user_agent}");
+            $format = config('request-logger.logger.format', "{ip} {remote_user} {date} {method} {url} HTTP/{http_version} {status} {content_length} {referer} {user_agent} {startMem} {endMem} {peakMem}");
             $format = array_get($this->formats, $format, $format);
             $message = $this->responseInterpolation->interpolate($format);
             $message = $this->requestInterpolation->interpolate($message);
