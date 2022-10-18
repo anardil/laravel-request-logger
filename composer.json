@@ -20,10 +20,7 @@
     "docs": "http://andersao.github.io/laravel-request-logger"
   },
   "require": {
-    "php": ">=7.3.0",
-    "illuminate/support": "^8.47",
-    "monolog/monolog": "^2.2",
-    "illuminate/http": "^8.47"
+    "php": ">=7.3.0"
   },
   "require-dev" : {
     "laravel/framework": "8.*"
